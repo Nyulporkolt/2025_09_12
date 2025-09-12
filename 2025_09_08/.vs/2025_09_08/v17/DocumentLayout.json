@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "Z:\\11.E\\Asztali alkalmaz\u00E1sok\\2025_09_08\\2025_09_08\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{286B9CAE-35D5-4439-BAD1-82344B3DF54B}|2025_09_08\\2025_09_08.csproj|z:\\11.e\\asztali alkalmaz\u00E1sok\\2025_09_08\\2025_09_08\\2025_09_08\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{286B9CAE-35D5-4439-BAD1-82344B3DF54B}|2025_09_08\\2025_09_08.csproj|solutionrelative:2025_09_08\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "Z:\\11.E\\Asztali alkalmaz\u00E1sok\\2025_09_08\\2025_09_08\\2025_09_08\\Program.cs",
+              "RelativeDocumentMoniker": "2025_09_08\\Program.cs",
+              "ToolTip": "Z:\\11.E\\Asztali alkalmaz\u00E1sok\\2025_09_08\\2025_09_08\\2025_09_08\\Program.cs",
+              "RelativeToolTip": "2025_09_08\\Program.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAiwFoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T12:24:27.776Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

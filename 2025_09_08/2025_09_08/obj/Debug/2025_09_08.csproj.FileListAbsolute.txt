@@ -1,0 +1,7 @@
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\obj\Debug\2025_09_08.csproj.AssemblyReference.cache
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\obj\Debug\2025_09_08.csproj.CoreCompileInputs.cache
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\bin\Debug\2025_09_08.exe.config
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\bin\Debug\2025_09_08.exe
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\bin\Debug\2025_09_08.pdb
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\obj\Debug\2025_09_08.exe
+Z:\11.E\Asztali alkalmazások\2025_09_08\2025_09_08\2025_09_08\obj\Debug\2025_09_08.pdb

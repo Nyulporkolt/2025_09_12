@@ -1,0 +1,151 @@
+.blog-post{
+    background-color: lightgreen;
+    padding-left: 5%;
+
+}
+.post-title{
+    color: black;
+    text-align: justify;
+}
+.post-date{
+    color: blue;
+}
+.post-content{
+    color: gray;
+}
+.news-article{
+    background-color: brown;
+    padding-left: 5%;
+}
+.article-title{
+color: black;
+}
+.author-name{
+
+}
+.article-summary{
+
+}
+.product-description{
+    background-color: lightgray;
+    padding-left: 5%;
+}
+.product-title{
+
+}
+.product-price{
+    color: red;
+}
+.event-invitation{
+    background-color: rgb(168, 168, 168);
+    padding-left: 5%;
+}
+.event.title{
+
+}
+.event-date{
+    color: rgb(63, 63, 63);
+}
+.event-details{
+
+}
+.review{
+    background-color: blue;
+    padding-left: 5%;
+}
+.review-title{
+    color: yellow;
+}
+.review-rating{
+    color: red;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+}
+.review-text{
+    color: yellow;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+}
+.ad-sidebar{
+    background-color: lightgrey;
+    padding-left: 5%;
+}
+.ad-title{
+    font-size: 18px;
+    font-weight: bolder;
+}
+.ad-content{
+    color: rgb(53, 53, 53);
+}
+.related-articles{
+    background-color: cornsilk;
+    padding-left: 5%;
+}
+.articles-title{
+    font-family: 'Times New Roman', Times, serif;
+
+}
+.articles-list{
+    list-style: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+}
+.bio-sidebar{
+    background-color: rgb(193, 253, 253);
+    padding-left: 4%;
+    font-family: 'Times New Roman', Times, serif;
+}
+.bio-title{
+    font-weight: bolder;
+}
+.bio-content{
+    width: 100%;
+    font-size: 14px;
+}
+.quote-sidebarevent-title{
+    background-color: lightgray;
+padding-left: 5%;
+}
+.quote-content{
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.quote-author{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: lighter;
+}
+.adat{
+    color: white;
+}
+.recipe{
+    font-family: 'Times New Roman', Times, serif;
+    padding-left: 5%;
+}
+.recipe-title{
+    font-weight: bolder;
+}
+.recipe-review{
+    font-style: italic;
+}
+.lab{
+    background-color: lightgray;
+    font-style: italic;
+}
+.science{
+    background-color: lightgrey;
+    padding-left: 5%;
+}
+.science-title{
+    font-weight: bolder;
+}
+.science-title2{
+    font-weight: bolder;
+    font-size: 25px;
+}
+.science-lab{
+    background-color: gray;
+    font-weight: bolder;
+    text-align: center;
+}

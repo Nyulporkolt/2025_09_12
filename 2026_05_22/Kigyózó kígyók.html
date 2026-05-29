@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"Kígyók kígyóznak" -Gyurcsány Ferenc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --canvas-bg: #050505;
+            --grid-color: #111;
+            --panel-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body.light-mode {
+            --bg-color: #f0f0f0;
+            --text-color: #1a1a1a;
+            --canvas-bg: #ffffff;
+            --grid-color: #e0e0e0;
+            --panel-bg: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: none;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 127, 0.1);
+            border: 4px solid #333;
+            border-radius: 12px;
+        }
+
+        canvas {
+            display: block;
+            background-color: var(--canvas-bg);
+            border-radius: 8px;
+        }
+
+        .ui-panel {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        #overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        body.light-mode #overlay-screen {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .setting-item {
+            background: var(--panel-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(128, 128, 128, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        .setting-item.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #444;
+            border-radius: 5px;
+            outline: none;
+            accent-color: #22c55e;
+        }
+
+        input[type="range"]:disabled {
+            accent-color: #666;
+        }
+
+        #ad-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .ad-loader {
+            width: 80%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .ad-progress {
+            width: 0%;
+            height: 100%;
+            background: #3b82f6;
+        }
+
+        .shake {
+            animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 2px solid #555;
+            border-radius: 50%;
+        }
+        
+        .controls {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .btn-control {
+            background: #333;
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #111;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <h1 class="text-2xl font-bold text-green-500">Kígyózó Kígyók</h1>
+        <div class="flex gap-4 justify-center">
+            <p class="font-mono">PONT: <span id="score" class="text-yellow-500">0</span></p>
+            <p class="font-mono opacity-60">BEST: <span id="best-score">0</span></p>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <canvas id="snakeGame"></canvas>
+        
+        <div id="ad-overlay">
+            <p class="text-blue-400 font-bold uppercase">Reklám...</p>
+            <div class="ad-loader"><div id="ad-progress" class="ad-progress"></div></div>
+        </div>
+
+        <div id="overlay-screen">
+            <div id="settings-menu" class="w-full max-h-[70vh] overflow-y-auto px-2">
+                <h2 class="text-xl font-bold mb-4 uppercase tracking-widest">Beállítások</h2>
+                
+                <div class="space-y-3 mb-6 text-left">
+                    <div class="setting-item">
+                        <div class="setting-row">
+                            <span class="text-sm font-semibold">Megjelenés:</span>
+                            <select id="theme-select" class="bg-gray-700 text-white text-xs p-1 rounded border border-gray-600">
+                                <option value="dark" selected>Sötét</option>
+                                <option value="light">Világos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-row">
+                            <span class="text-sm font-semibold">Sebesség:</span>
+                            <span id="speed-label" class="text-xs text-green-400">Normál</span>
+                        </div>
+                        <input type="range" id="speed-slider" min="0" max="3" step="1" value="1">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-row">
+                            <span class="text-sm font-semibold">Pálya mérete:</span>
+                            <select id="grid-select" class="bg-gray-700 text-white text-xs p-1 rounded border border-gray-600">
+                                <option value="15">Kicsi (15x15)</option>
+                                <option value="20" selected>Közepes (20x20)</option>
+                                <option value="25">Nagy (25x25)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="spike-slider-container" class="setting-item">
+                        <div class="setting-row">
+                            <span class="text-sm font-semibold">Kezdő tüskék:</span>
+                            <span id="spike-count-label" class="text-xs text-yellow-400">Kevés</span>
+                        </div>
+                        <input type="range" id="spike-slider" min="0" max="10" step="1" value="3">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-row">
+                            <span class="text-sm font-semibold">Akadály evés után:</span>
+                            <input type="checkbox" id="spike-per-apple" class="w-4 h-4 cursor-pointer">
+                        </div>
+                        <p class="text-[10px] opacity-50">Minden alma után egy új tüske jelenik meg.</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="setting-item items-center">
+                            <span class="text-[10px] uppercase opacity-60">Kígyó</span>
+                            <input type="color" id="snake-color" value="#00ff7f">
+                        </div>
+                        <div class="setting-item items-center">
+                            <span class="text-[10px] uppercase opacity-60">Alma</span>
+                            <input type="color" id="food-color" value="#ff4444">
+                        </div>
+                        <div class="setting-item items-center">
+                            <span class="text-[10px] uppercase opacity-60">Tüske</span>
+                            <input type="color" id="spike-color" value="#ffcc00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-over-info" class="hidden w-full mb-4">
+                <h2 class="text-3xl font-bold text-red-500 mb-1 uppercase">Vége</h2>
+                <p class="text-lg mb-2">Pont: <span id="final-score" class="font-bold">0</span></p>
+                <p id="new-record-msg" class="text-yellow-500 font-bold mb-4 hidden">ÚJ REKORD!</p>
+                
+                <div id="revive-section" class="mb-3">
+                    <button id="revive-btn" onclick="startAd()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold transition flex items-center justify-center gap-2">
+                        Újjraéledés
+                    </button>
+                </div>
+            </div>
+
+            <button id="start-btn" onclick="startGame()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-lg transition shadow-lg">Játék Indítása</button>
+        </div>
+    </div>
+
+    <div class="controls md:hidden">
+        <div></div>
+        <button class="btn-control" onmousedown="handleInput('up')" ontouchstart="handleInput('up')">↑</button>
+        <div></div>
+        <button class="btn-control" onmousedown="handleInput('left')" ontouchstart="handleInput('left')">←</button>
+        <button class="btn-control" onmousedown="handleInput('down')" ontouchstart="handleInput('down')">↓</button>
+        <button class="btn-control" onmousedown="handleInput('right')" ontouchstart="handleInput('right')">→</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("snakeGame");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+        const bestScoreElement = document.getElementById("best-score");
+        const finalScoreElement = document.getElementById("final-score");
+        const overlayScreen = document.getElementById("overlay-screen");
+        const gameOverInfo = document.getElementById("game-over-info");
+        const gameContainer = document.getElementById("game-container");
+        const adOverlay = document.getElementById("ad-overlay");
+        const adProgress = document.getElementById("ad-progress");
+        const reviveBtn = document.getElementById("revive-btn");
+        const reviveSection = document.getElementById("revive-section");
+        const startBtn = document.getElementById("start-btn");
+
+        const themeSelect = document.getElementById("theme-select");
+        const gridSelect = document.getElementById("grid-select");
+        const speedSlider = document.getElementById("speed-slider");
+        const speedLabel = document.getElementById("speed-label");
+        const spikeSlider = document.getElementById("spike-slider");
+        const spikeSliderContainer = document.getElementById("spike-slider-container");
+        const spikeLabel = document.getElementById("spike-count-label");
+        const spikePerAppleToggle = document.getElementById("spike-per-apple");
+        const snakeColorInput = document.getElementById("snake-color");
+        const foodColorInput = document.getElementById("food-color");
+        const spikeColorInput = document.getElementById("spike-color");
+
+        let gridSize, tileCount;
+        let snake = []; 
+        let food = {x: 5, y: 5};
+        let obstacles = [];
+        let score = 0, bestScore = localStorage.getItem("snakeBestScore") || 0;
+        let isGameOver = true, hasRevived = false, isInvulnerable = false;
+        
+        let currentDir = {x: 0, y: 0}, nextDir = {x: 0, y: 0};
+        let moveProgress = 0, currentBaseSpeed = 0.15; 
+        let particles = [];
+
+        bestScoreElement.innerText = bestScore;
+
+        const speeds = ["Lassú", "Normál", "Gyors", "Extrém"];
+        const speedValues = [0.08, 0.15, 0.22, 0.32];
+        speedSlider.oninput = () => speedLabel.innerText = speeds[speedSlider.value];
+        
+        spikeSlider.oninput = () => {
+            const val = parseInt(spikeSlider.value);
+            if (val === 0) spikeLabel.innerText = "Nincs";
+            else if (val < 4) spikeLabel.innerText = "Kevés";
+            else if (val < 8) spikeLabel.innerText = "Sok";
+            else spikeLabel.innerText = "Káosz";
+        };
+
+        // Új funkció: Tüske csúszka tiltása, ha az "evés után" be van kapcsolva
+        spikePerAppleToggle.onchange = () => {
+            if (spikePerAppleToggle.checked) {
+                spikeSlider.disabled = true;
+                spikeSliderContainer.classList.add('disabled');
+            } else {
+                spikeSlider.disabled = false;
+                spikeSliderContainer.classList.remove('disabled');
+            }
+        };
+
+        function setupGrid() {
+            tileCount = parseInt(gridSelect.value);
+            const size = Math.min(window.innerWidth - 40, 400);
+            canvas.width = canvas.height = size;
+            gridSize = canvas.width / tileCount;
+        }
+
+        themeSelect.addEventListener('change', () => {
+            document.body.classList.toggle('light-mode', themeSelect.value === 'light');
+        });
+
+        window.addEventListener('resize', setupGrid);
+        setupGrid();
+
+        function handleInput(dir) {
+            if (isGameOver) return;
+            const horizontal = currentDir.x !== 0, vertical = currentDir.y !== 0;
+            switch(dir) {
+                case 'up': if (!vertical) nextDir = {x: 0, y: -1}; break;
+                case 'down': if (!vertical) nextDir = {x: 0, y: 1}; break;
+                case 'left': if (!horizontal) nextDir = {x: -1, y: 0}; break;
+                case 'right': if (!horizontal) nextDir = {x: 1, y: 0}; break;
+            }
+            if (currentDir.x === 0 && currentDir.y === 0) currentDir = {...nextDir};
+        }
+
+        document.addEventListener("keydown", (e) => handleInput(e.key.replace('Arrow', '').toLowerCase()));
+
+        function createParticles(x, y, color, count = 10) {
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 1 + Math.random() * 2;
+                particles.push({
+                    x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                    life: 1.0, decay: 0.02 + Math.random() * 0.02, color, size: 1 + Math.random() * 2
+                });
+            }
+        }
+
+        function startGame() {
+            setupGrid();
+            currentBaseSpeed = speedValues[parseInt(speedSlider.value)];
+            overlayScreen.style.display = "none";
+            resetVariables();
+            isGameOver = false;
+            generateFood();
+            generateInitialObstacles();
+        }
+
+        function resetVariables() {
+            const center = Math.floor(tileCount / 2);
+            snake = [
+                {x: center, y: center, oldX: center, oldY: center},
+                {x: center, y: center + 1, oldX: center, oldY: center + 1},
+                {x: center, y: center + 2, oldX: center, oldY: center + 2}
+            ];
+            currentDir = {x: 0, y: 0}; nextDir = {x: 0, y: -1}; 
+            moveProgress = 0; score = 0;
+            hasRevived = false; isInvulnerable = false;
+            particles = [];
+            scoreElement.innerText = "0";
+        }
+
+        function generateFood() {
+            food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+            for (let p of snake) if (p.x === food.x && p.y === food.y) return generateFood();
+            for (let o of obstacles) if (o.x === food.x && o.y === food.y) return generateFood();
+        }
+
+        function spawnOneSpike() {
+            let obs = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+            let invalid = false;
+            if (Math.abs(obs.x - snake[0].x) < 2 && Math.abs(obs.y - snake[0].y) < 2) invalid = true;
+            if (obs.x === food.x && obs.y === food.y) invalid = true;
+            for (let p of snake) if (p.x === obs.x && p.y === obs.y) invalid = true;
+            for (let existing of obstacles) if (existing.x === obs.x && existing.y === obs.y) invalid = true;
+            
+            if (invalid) return spawnOneSpike();
+            obstacles.push(obs);
+        }
+
+        function generateInitialObstacles() {
+            obstacles = [];
+            // Ha dinamikus akadályokat választunk, ne legyenek kezdő akadályok a fair play érdekében
+            if (spikePerAppleToggle.checked) return;
+
+            const intensity = parseInt(spikeSlider.value);
+            if (intensity === 0) return;
+            const maxPossible = Math.floor((tileCount * tileCount) * 0.15);
+            const count = Math.floor((intensity / 10) * maxPossible);
+            for (let i = 0; i < count; i++) {
+                spawnOneSpike();
+            }
+        }
+
+        function startAd() {
+            reviveBtn.disabled = true;
+            gameOverInfo.classList.add('hidden');
+            adOverlay.style.display = "flex";
+            adProgress.style.width = "0%";
+            let start = null;
+            function animateAd(timestamp) {
+                if (!start) start = timestamp;
+                const p = timestamp - start;
+                adProgress.style.width = Math.min((p/1500)*100, 100) + "%";
+                if (p < 1500) requestAnimationFrame(animateAd);
+                else reviveSnake();
+            }
+            requestAnimationFrame(animateAd);
+        }
+
+        function reviveSnake() {
+            adOverlay.style.display = "none";
+            overlayScreen.style.display = "none";
+            isGameOver = false; hasRevived = true; isInvulnerable = true;
+            snake.forEach(p => {
+                p.x = Math.max(0, Math.min(tileCount - 1, p.x));
+                p.y = Math.max(0, Math.min(tileCount - 1, p.y));
+                p.oldX = p.x; p.oldY = p.y;
+            });
+            currentDir = {x: 0, y: 0}; moveProgress = 0;
+            setTimeout(() => isInvulnerable = false, 2000);
+        }
+
+        function checkCollision(headX, headY) {
+            if (headX < 0 || headX >= tileCount || headY < 0 || headY >= tileCount) return true;
+            for (let i = 1; i < snake.length - 1; i++) {
+                if (snake[i].x === headX && snake[i].y === headY) return true;
+            }
+            for (let o of obstacles) {
+                if (o.x === headX && o.y === headY) return true;
+            }
+            return false;
+        }
+
+        function update() {
+            if (isGameOver || (currentDir.x === 0 && currentDir.y === 0)) {
+                updateParticles();
+                return;
+            }
+
+            moveProgress += currentBaseSpeed + (score / 10000);
+            if (moveProgress >= 1) {
+                moveProgress = 0;
+                currentDir = {...nextDir};
+                const nextX = snake[0].x + currentDir.x;
+                const nextY = snake[0].y + currentDir.y;
+
+                if (!isInvulnerable && checkCollision(nextX, nextY)) return gameOver();
+
+                if (isInvulnerable && (nextX < 0 || nextX >= tileCount || nextY < 0 || nextY >= tileCount)) {
+                    currentDir = nextDir = {x:0, y:0}; return;
+                }
+
+                for(let i = snake.length - 1; i > 0; i--) {
+                    snake[i].oldX = snake[i].x; snake[i].oldY = snake[i].y;
+                    snake[i].x = snake[i-1].x; snake[i].y = snake[i-1].y;
+                }
+                snake[0].oldX = snake[0].x; snake[0].oldY = snake[0].y;
+                snake[0].x = nextX; snake[0].y = nextY;
+
+                if (snake[0].x === food.x && snake[0].y === food.y) {
+                    score += 10; scoreElement.innerText = score;
+                    if (score > bestScore) { 
+                        bestScore = score; 
+                        bestScoreElement.innerText = bestScore; 
+                        localStorage.setItem("snakeBestScore", bestScore); 
+                    }
+                    createParticles(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, foodColorInput.value);
+                    const last = snake[snake.length - 1];
+                    snake.push({x: last.oldX, y: last.oldY, oldX: last.oldX, oldY: last.oldY});
+                    
+                    if (spikePerAppleToggle.checked) {
+                        spawnOneSpike();
+                    }
+                    
+                    generateFood();
+                }
+            }
+            updateParticles();
+        }
+
+        function updateParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i]; p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function drawSpike(x, y) {
+            const centerX = x * gridSize + gridSize/2;
+            const centerY = y * gridSize + gridSize/2;
+            const r = gridSize/2 - 3;
+            ctx.fillStyle = spikeColorInput.value;
+            ctx.beginPath();
+            for(let i=0; i<8; i++) {
+                const angle = (i / 8) * Math.PI * 2;
+                const innerAngle = angle + Math.PI/8;
+                ctx.lineTo(centerX + Math.cos(angle) * r, centerY + Math.sin(angle) * r);
+                ctx.lineTo(centerX + Math.cos(innerAngle) * (r/2), centerY + Math.sin(innerAngle) * (r/2));
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--grid-color');
+            ctx.lineWidth = 1;
+            for(let i=0; i<=canvas.width; i+=gridSize) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+            }
+
+            obstacles.forEach(o => drawSpike(o.x, o.y));
+
+            if (!isGameOver) {
+                const pulse = Math.sin(Date.now() / 150) * 2;
+                ctx.fillStyle = foodColorInput.value;
+                ctx.shadowBlur = 10 + pulse; ctx.shadowColor = foodColorInput.value;
+                ctx.beginPath();
+                ctx.arc(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, (gridSize/2 - 5) + pulse/2, 0, Math.PI*2);
+                ctx.fill(); ctx.shadowBlur = 0;
+            }
+
+            snake.forEach((part, index) => {
+                const interpX = part.oldX + (part.x - part.oldX) * moveProgress;
+                const interpY = part.oldY + (part.y - part.oldY) * moveProgress;
+                
+                if (isGameOver) { 
+                    ctx.fillStyle = "#999"; ctx.globalAlpha = 0.3; 
+                } else {
+                    if (isInvulnerable && Math.floor(Date.now() / 100) % 2 === 0) ctx.globalAlpha = 0.4;
+                    ctx.fillStyle = snakeColorInput.value;
+                    if (index === 0) { 
+                        ctx.shadowBlur = 10; 
+                        ctx.shadowColor = snakeColorInput.value; 
+                    }
+                }
+                
+                const padding = index === 0 ? 2 : 4;
+                const size = gridSize - padding * 2;
+                ctx.beginPath(); 
+                ctx.roundRect(interpX * gridSize + padding, interpY * gridSize + padding, size, size, index === 0 ? 8 : 4);
+                ctx.fill(); 
+                ctx.shadowBlur = 0; ctx.globalAlpha = 1.0;
+            });
+
+            particles.forEach(p => {
+                ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2); ctx.fill();
+            });
+            ctx.globalAlpha = 1.0;
+        }
+
+        function gameLoop() { update(); draw(); requestAnimationFrame(gameLoop); }
+
+        function gameOver() {
+            if (isGameOver) return;
+            isGameOver = true;
+            gameContainer.classList.add('shake');
+            setTimeout(() => gameContainer.classList.remove('shake'), 300);
+            snake.forEach(part => createParticles(part.x * gridSize + gridSize/2, part.y * gridSize + gridSize/2, snakeColorInput.value, 8));
+            finalScoreElement.innerText = score;
+            document.getElementById("new-record-msg").style.display = (score >= bestScore && score > 0) ? "block" : "none";
+            setTimeout(() => {
+                overlayScreen.style.display = "flex";
+                gameOverInfo.classList.remove('hidden');
+                reviveSection.style.display = hasRevived ? "none" : "block";
+                startBtn.innerText = "Új Játék";
+            }, 600);
+        }
+
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

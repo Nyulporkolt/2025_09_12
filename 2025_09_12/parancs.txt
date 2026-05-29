@@ -1,0 +1,211 @@
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka
+$ echo "# 2025_09_12" >> README.md
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka
+$ git init
+Initialized empty Git repository in //home/tanulok/laszlo.bence/11.E/IKT projektmunka/.git/
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (master)
+$ git add README.md
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (master)
+$ git commit -m "first commit"
+[master (root-commit) 8d09808] first commit
+ Committer: László Bence József <laszlo.bence@sulinet.csmszki>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (master)
+$ git branch -M main
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git remote add origin https://github.com/Nyulporkolt/2025_09_12.git
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git push -u origin main
+info: please complete authentication in your browser...
+
+ *  History restored 
+
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ echo "# 2025_09_12" >> README.md
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git init
+Reinitialized existing Git repository in //home/tanulok/laszlo.bence/11.E/IKT projektmunka/.git/
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git add README.md
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git commit -m "first commit"
+[main d084aa3] first commit
+ Committer: László Bence József <laszlo.bence@sulinet.csmszki>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 1 insertion(+)
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git branch -M main
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git remote add origin https://github.com/Nyulporkolt/2025_09_12.git
+error: remote origin already exists.
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git push -u origin main
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (6/6), 449 bytes | 29.00 KiB/s, done.
+Total 6 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/Nyulporkolt/2025_09_12.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git commit -m "asdasda"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git commit -m "asdasda"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        2025_09_11/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git add 2025_09_11
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git commit -m " szematikus"
+[main f536124]  szematikus
+ Committer: László Bence József <laszlo.bence@sulinet.csmszki>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 9 files changed, 357 insertions(+)
+ create mode 100644 2025_09_11/2. Szemantikus elemek.pdf
+ create mode 100644 2025_09_11/2. Szemantikus elemek_feladatok.pdf
+ create mode 100644 "2025_09_11/2. Szemantikus elemek_feladatok_j\303\263.pdf"
+ create mode 100644 2025_09_11/2_alap_szemantikus elemek.txt
+ create mode 100644 2025_09_11/feladat.html
+ create mode 100644 2025_09_11/grofo.jpg
+ create mode 100644 2025_09_11/harold.jpg
+ create mode 100644 2025_09_11/index.html
+ create mode 100644 2025_09_11/style.css
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git push
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (12/12), done.
+Writing objects: 100% (12/12), 716.18 KiB | 9.95 MiB/s, done.
+Total 12 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/Nyulporkolt/2025_09_12.git
+   d084aa3..f536124  main -> main
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git add
+Nothing specified, nothing added.
+hint: Maybe you wanted to say 'git add .'?
+hint: Disable this message with "git config set advice.addEmptyPathspec false"
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git add 2025_09_08
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git commit -m "c#"
+[main 9c647b3] c#
+ Committer: László Bence József <laszlo.bence@sulinet.csmszki>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 19 files changed, 346 insertions(+)
+ create mode 100644 2025_09_08/.vs/2025_09_08/FileContentIndex/22c14200-2dcd-498c-80da-b6834c3b233a.vsidx
+ create mode 100644 2025_09_08/.vs/2025_09_08/v17/.suo
+ create mode 100644 2025_09_08/.vs/2025_09_08/v17/DocumentLayout.backup.json
+ create mode 100644 2025_09_08/.vs/2025_09_08/v17/DocumentLayout.json
+ create mode 100644 2025_09_08/2025_09_08.sln
+ create mode 100644 2025_09_08/2025_09_08/2025_09_08.csproj
+ create mode 100644 2025_09_08/2025_09_08/App.config
+ create mode 100644 2025_09_08/2025_09_08/Program.cs
+ create mode 100644 2025_09_08/2025_09_08/Properties/AssemblyInfo.cs
+ create mode 100644 2025_09_08/2025_09_08/bin/Debug/2025_09_08.exe
+ create mode 100644 2025_09_08/2025_09_08/bin/Debug/2025_09_08.exe.config
+ create mode 100644 2025_09_08/2025_09_08/bin/Debug/2025_09_08.pdb
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs  
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/2025_09_08.csproj.AssemblyReference.cache
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/2025_09_08.csproj.CoreCompileInputs.cache
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/2025_09_08.csproj.FileListAbsolute.txt
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/2025_09_08.exe
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/2025_09_08.pdb
+ create mode 100644 2025_09_08/2025_09_08/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache      
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)
+$ git push
+Enumerating objects: 30, done.
+Counting objects: 100% (30/30), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (25/25), done.
+Writing objects: 100% (29/29), 23.32 KiB | 450.00 KiB/s, done.
+Total 29 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/Nyulporkolt/2025_09_12.git
+   f536124..9c647b3  main -> main
+
+laszlo.bence@M116-04 MINGW64 /z/11.E/IKT projektmunka (main)

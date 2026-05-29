@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Gyakorló Feladatok</title>
+    <!-- Külső stíluslap beöltése -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind CSS a segédosztályokhoz (elrendezéshez) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-2xl w-full space-y-8 container-wrapper">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8 mt-4">JavaScript Feladatok</h1>
+
+        <!-- 1. Feladat: Gomb kattintás -->
+        <section class="card">
+            <h2 class="text-xl font-semibold mb-4 text-blue-600">1. Gomb kattintás</h2>
+            <p class="mb-4 text-gray-600">Kattints a gombra egy üzenet megjelenítéséhez!</p>
+            <button id="alertBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition shadow">
+                Kattints ide!
+            </button>
+            <div id="messageOutput"></div>
+        </section>
+        <section class="card">
+            <h2 class="text-xl font-semibold mb-4 text-green-600">2. Szöveg megváltoztatása</h2>
+            <p id="targetParagraph" class="mb-4 text-lg text-gray-800 border-l-4 border-green-500 pl-3">
+                Ez az eredeti szöveg a bekezdésben.
+            </p>
+            <button id="changeTextBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition shadow">
+                Szöveg módosítása
+            </button>
+        </section>
+
+        <section class="card">
+            <h2 class="text-xl font-semibold mb-4 text-purple-600">3. Háttérszín változtatása</h2>
+            <p class="mb-4 text-gray-600">Minden kattintás egy véletlenszerű színt állít be háttérnek.</p>
+            <button id="bgChangeBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition shadow">
+                Színváltás!
+            </button>
+        </section>
+
+        <section class="card">
+            <h2 class="text-xl font-semibold mb-4 text-red-600">4. Kép váltó galéria</h2>
+            <div class="flex flex-col items-center">
+                <div class="image-container">
+                    <img id="galleryImg" src="" alt="Galéria kép">
+                </div>
+                <button id="nextImgBtn" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded transition shadow">
+                    Következő kép
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Külső JavaScript fájl betöltése a body végén -->
+    <script src="kulso.js"></script>
+</body>
+</html>
+
+
+
+// Várjuk meg, amíg a DOM teljesen betöltődik
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 1. Feladat: Gomb kattintás ---
+    const alertBtn = document.getElementById('alertBtn');
+    const messageOutput = document.getElementById('messageOutput');
+
+    if (alertBtn) {
+        alertBtn.addEventListener('click', () => {
+            messageOutput.textContent = "Sikeresen megnyomtad a gombot! 🎉";
+            // 3 másodperc után eltűnik az üzenet
+            setTimeout(() => { 
+                messageOutput.textContent = ""; 
+            }, 3000);
+        });
+    }
+
+    // --- 2. Feladat: Szöveg megváltoztatása ---
+    const changeTextBtn = document.getElementById('changeTextBtn');
+    const targetParagraph = document.getElementById('targetParagraph');
+
+    if (changeTextBtn) {
+        changeTextBtn.addEventListener('click', () => {
+            targetParagraph.textContent = "A szöveg sikeresen megváltozott! ✨";
+            targetParagraph.classList.add('text-highlight');
+        });
+    }
+
+    // --- 3. Feladat: Háttérszín változtatása ---
+    const bgChangeBtn = document.getElementById('bgChangeBtn');
+
+    if (bgChangeBtn) {
+        bgChangeBtn.addEventListener('click', () => {
+            // Véletlenszerű RGB szín generálása
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            
+            // Beállítjuk a hátteret egy kis átlátszósággal (0.3), hogy ne legyen túl erős
+            document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b}, 0.3)`;
+        });
+    }
+
+    // --- 4. Feladat: Kép váltó galéria ---
+    const nextImgBtn = document.getElementById('nextImgBtn');
+    const galleryImg = document.getElementById('galleryImg');
+
+    // Példa képek listája (Lorem Picsum ID-k)
+    const imageIds = [10, 25, 32, 48, 55, 77];
+    let currentIndex = 0;
+
+    if (nextImgBtn && galleryImg) {
+        nextImgBtn.addEventListener('click', () => {
+            // Index növelése (visszaugrik az elejére, ha a végére ér)
+            currentIndex = (currentIndex + 1) % imageIds.length;
+            
+            // Elhalványítás effektus
+            galleryImg.style.opacity = '0';
+            
+            // Rövid várakozás után képcsere és visszahozás
+            setTimeout(() => {
+                galleryImg.src = `https://picsum.photos/id/${imageIds[currentIndex]}/400/200`;
+                galleryImg.style.opacity = '1';
+            }, 250);
+        });
+    }
+});
+
+
+
+/* Alapbeállítások a testnek */
+body {
+    transition: background-color 0.5s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-wrapper {
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Kártyák stílusa */
+.card {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Kép galéria stílusa */
+.image-container {
+    width: 100%;
+    height: 250px;
+    background-color: #f3f4f6;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d1d5db;
+}
+
+#galleryImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* Üzenet kimenet helye */
+#messageOutput {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    color: #10b981;
+    font-weight: 600;
+    min-height: 3rem;
+    text-align: center;
+    border-radius: 0.5rem;
+}
+
+/* Egyedi animáció a szövegváltozáshoz */
+.text-highlight {
+    font-style: italic;
+    color: #2563eb;
+    transition: all 0.3s ease;
+}

@@ -1,0 +1,10 @@
+1. Igen Case sensitive
+2. Nem
+3. 
+a; Igaz
+b; De tehető az állítás hamis
+c; Igen
+d; Igen script src-vel
+e; Igen
+4. ezzel a kóddal a html és a js fájl egyszerre tölt be
+5. meta charset-tel
